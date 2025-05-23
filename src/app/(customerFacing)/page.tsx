@@ -16,7 +16,7 @@ const getMostPopularProducts = cache(
     });
   },
   ["/", "getMostPopularProducts"],
-  { revalidate: 60 * 60 * 24 }
+  { revalidate: 60 * 60 * 24 },
 );
 
 const getNewestProducts = cache(() => {
@@ -74,6 +74,15 @@ function ProductGridSection({
       </div>
     </div>
   );
+}
+
+async function hashPassword(password: string) {
+  const arrayBuffer = await crypto.subtle.digest(
+    "SHA-512",
+    new TextEncoder().encode(password),
+  );
+
+  return Buffer.from(arrayBuffer).toString("base64");
 }
 
 async function ProductSuspense({
