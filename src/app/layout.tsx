@@ -6,10 +6,10 @@ import { cn } from "@/lib/utils";
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "ITZREIGNSTORE",
-  description: "Next.js Project",
+  title: "Simple Store",
+  description: "Simple Store by ItzReign",
   icons: {
-    icon: "/my-pf.png",
+    icon: "my-pf.png",
   },
 };
 
@@ -23,7 +23,7 @@ export default function RootLayout({
       <body
         className={cn(
           "bg-background min-h-screen font-sans antialiased",
-          inter.variable
+          inter.variable,
         )}
       >
         {children}

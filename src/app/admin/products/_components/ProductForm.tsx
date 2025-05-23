@@ -9,16 +9,15 @@ import { useState } from "react";
 import { addProduct, updateProduct } from "../../_actions/products";
 import { useFormState, useFormStatus } from "react-dom";
 import { Product } from "@prisma/client";
-import { Divide } from "lucide-react";
 import Image from "next/image";
 
 export default function ProductForm({ product }: { product?: Product | null }) {
   const [error, action] = useFormState(
     product == null ? addProduct : updateProduct.bind(null, product.id),
-    {}
+    {},
   );
   const [priceInCents, setPriceInCents] = useState<number | undefined>(
-    product?.priceInCents
+    product?.priceInCents,
   );
 
   return (
