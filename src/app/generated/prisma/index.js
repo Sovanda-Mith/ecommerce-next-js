@@ -184,6 +184,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -194,7 +195,7 @@ const config = {
   },
   "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/app/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Product {\n  id                     String                 @id @default(uuid())\n  name                   String\n  priceInCents           Int\n  filePath               String\n  imagePath              String\n  description            String\n  isAvailableForPurchase Boolean                @default(true)\n  createdAt              DateTime               @default(now())\n  updatedAt              DateTime               @updatedAt\n  orders                 Order[]\n  DownloadVerification   DownloadVerification[]\n}\n\nmodel User {\n  id        String   @id @default(uuid())\n  email     String   @unique\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  orders    Order[]\n}\n\nmodel Order {\n  id               String   @id @default(uuid())\n  pricePaidInCents Int\n  createdAt        DateTime @default(now())\n  updatedAt        DateTime @updatedAt\n\n  userId    String\n  productId String\n  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)\n  product   Product @relation(fields: [productId], references: [id], onDelete: Restrict)\n}\n\nmodel DownloadVerification {\n  id        String   @id @default(uuid())\n  expiresAt DateTime\n  createdAt DateTime @default(now())\n  productId String\n  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)\n}\n",
   "inlineSchemaHash": "bf02f22af32fc52f8eb883de92e350bab92bd4d46dfed994b937dd0c7337fae3",
-  "copyEngine": false
+  "copyEngine": true
 }
 
 const fs = require('fs')
@@ -231,3 +232,9 @@ const PrismaClient = getPrismaClient(config)
 exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-debian-openssl-3.0.x.so.node");
+path.join(process.cwd(), "src/app/generated/prisma/libquery_engine-debian-openssl-3.0.x.so.node")
+// file annotations for bundling tools to include these files
+path.join(__dirname, "schema.prisma");
+path.join(process.cwd(), "src/app/generated/prisma/schema.prisma")
